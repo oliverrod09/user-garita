@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useRef, useContext } from "react";
+import { useParams, Navigate } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -8,14 +8,20 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import axios from "axios";
+import { back } from "../const/urls";
+import { ContextMain } from "../context/ContextMain";
 
 function DetailsInv() {
   const { id } = useParams();
+  const {auth} = useContext(ContextMain)
   const [invitation, setInvitation] = useState({});
   const [expirationStatus, setExpirationStatus] = useState("");
-  const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
   const [qrGenerated, setQrGenerated] = useState(false);
+
+  if (!auth) {
+    return <Navigate to={"/"}></Navigate>
+  }
 
   useEffect(() => {
     if (invitation.cod && containerRef.current && !qrGenerated) {
@@ -23,15 +29,13 @@ function DetailsInv() {
       setQrGenerated(true);
     }
   }, [invitation, qrGenerated]);
-
-  const handleOpen = () => setOpen(!open);
   useEffect(() => {
     getInvitation();
   }, []);
 
   async function getInvitation() {
     try {
-      const url = `http://localhost:3000/invitations/${id}`;
+      const url = `${back}/invitations/${id}`;
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -54,11 +58,9 @@ function DetailsInv() {
         } else {
           setExpirationStatus("Expirada");
         }
-      } else {
-        console.log(response.data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
     }
   }
   return (

@@ -1,16 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { back } from "../const/urls";
+import { ContextMain } from "../context/ContextMain";
+import { DrawerDash } from "../components/DrawerDash";
+import CardInvitation from "../components/CardInvitation";
 
 function Invitations() {
   const [user, setUser] = useState([]);
+  const [expirationStatus, setExpirationStatus] = useState("");
+  const { auth } = useContext(ContextMain);
+  if (!auth) {
+    return <Navigate to={"/"}></Navigate>;
+  }
   useEffect(() => {
     getInvitations();
   }, []);
 
   async function getInvitations() {
     try {
-      const url = "http://localhost:3000/invitations/user";
+      const url = `${back}/invitations/user`;
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -23,6 +32,7 @@ function Invitations() {
         console.log(response.data);
         const data = response.data;
         setUser(data);
+        
       } else {
         console.log(response.data.message);
       }
@@ -30,17 +40,20 @@ function Invitations() {
       console.log(error);
     }
   }
+
   return (
     <>
-      invitaciones
-      <div className="flex flex-col gap-2">
-        {user.map((inv, key) => (
-          <Link to={`/invitation/${inv.id}`} key={key} className="w-full bg-blue-gray-300 rounded-md flex gap-4 py-4">
-            <span>{key+1}.</span>
-            <p>{inv.name}</p>
-          </Link>
-        ))}
+      <div className="flex gap-4 items-center py-6">
+        <DrawerDash></DrawerDash>
+        <p className="font-extrabold">Invitaciones</p>
       </div>
+      <main className="w-11/12 mx-auto">
+        <div className="flex flex-col gap-2">
+          {user.map((inv, key) => (
+            <CardInvitation key={key} inv={inv}></CardInvitation>
+          ))}
+        </div>
+      </main>
     </>
   );
 }
