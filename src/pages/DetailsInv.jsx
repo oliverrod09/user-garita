@@ -10,18 +10,15 @@ import {
 import axios from "axios";
 import { back } from "../const/urls";
 import { ContextMain } from "../context/ContextMain";
+import { DrawerDash } from "../components/DrawerDash";
 
 function DetailsInv() {
   const { id } = useParams();
-  const {auth} = useContext(ContextMain)
+  const { auth, formatDate } = useContext(ContextMain);
   const [invitation, setInvitation] = useState({});
   const [expirationStatus, setExpirationStatus] = useState("");
   const containerRef = useRef(null);
   const [qrGenerated, setQrGenerated] = useState(false);
-
-  if (!auth) {
-    return <Navigate to={"/"}></Navigate>
-  }
 
   useEffect(() => {
     if (invitation.cod && containerRef.current && !qrGenerated) {
@@ -32,6 +29,10 @@ function DetailsInv() {
   useEffect(() => {
     getInvitation();
   }, []);
+
+  if (!auth) {
+    return <Navigate to={"/"}></Navigate>;
+  }
 
   async function getInvitation() {
     try {
@@ -52,6 +53,8 @@ function DetailsInv() {
 
         const currentDate = new Date();
         const timeDifference = Math.floor((backendDate - currentDate) / 60000);
+        var expires = formatDate(data.expiresAt);
+        var create = formatDate(data.createdAt);
 
         if (timeDifference > 0) {
           setExpirationStatus(`Tiene ${timeDifference} minutos restantes.`);
@@ -65,26 +68,48 @@ function DetailsInv() {
   }
   return (
     <>
-      <div className="w-full flex min-h-screen items-center justify-center">
-        <div className="rounded-md bg-blue-gray-400 py-5 px-8">
-          <h2 className="text-white font-bold text-xl text-center my-7">
-            Invitación
-          </h2>
-          <p>Nombre: {invitation.name}</p>
-          <p>Cedula: {invitation.cedula}</p>
-          <p>Placa: {invitation.board}</p>
-          <p>Celular: {invitation.cellphone}</p>
-          <p>
-            Usada:{" "}
-            {invitation.used ? <span>usada</span> : <span>no usada</span>}
-          </p>
-          <p>Time: {expirationStatus}</p>
-          <p>Creada: {invitation.createdAt}</p>
-          <p>Expira: {invitation.expiresAt}</p>
-          <div ref={containerRef}></div>
+      <main className="min-h-screen bg-black/90 pb-1">
+        <div className="flex gap-4 items-center py-6 bg-white">
+          <DrawerDash></DrawerDash>
+          <p className="font-extrabold">Invitación</p>
         </div>
-      </div>
+        <div className="w-full flex items-center justify-center my-4 md:my-10">
+          <div className="rounded-md bg-blue-gray-400 py-5 px-8">
+            <h2 className="text-white font-bold text-center my-7 text-xl md:text-5xl">
+              Invitación
+            </h2>
+            <div className="flex flex-col md:flex-row md:items-center md:gap-6 gap-2">
+              <div className="flex flex-col gap-8 text-sm md:text-lg">
+                <div className="flex gap-4 ">
+                  <div className="flex flex-col gap-2">
+                    <p>Nombre: {invitation.name}</p>
+                    <p>Placa: {invitation.board}</p>
+                    <p>Celular: {invitation.cellphone}</p>
+                    <p>Cedula: {invitation.cedula}</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p>
+                      Usada:{" "}
+                      {invitation.used ? (
+                        <span>Usada</span>
+                      ) : (
+                        <span>No usada</span>
+                      )}
+                    </p>
+                    <p>Tiempo: {expirationStatus}</p>
+                  </div>
+                </div>
 
+                <div>
+                  <p>Creada: {formatDate(invitation.createdAt)}</p>
+                  <p>Expira: {formatDate(invitation.expiresAt)}</p>
+                </div>
+              </div>
+              <div className="mx-auto" ref={containerRef}></div>
+            </div>
+          </div>
+        </div>
+      </main>
     </>
   );
 }

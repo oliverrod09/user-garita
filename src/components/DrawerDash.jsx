@@ -11,6 +11,7 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import { ContextMain } from "../context/ContextMain";
+import { Navigate, Link } from "react-router-dom";
  
 export function DrawerDash() {
   const [open, setOpen] = useState(false);
@@ -49,6 +50,7 @@ export function DrawerDash() {
           </IconButton>
         </div>
         <List>
+          <Link to={"/invitations"}>
           <ListItem>
             <ListItemPrefix>
               <svg
@@ -64,8 +66,10 @@ export function DrawerDash() {
                 />
               </svg>
             </ListItemPrefix>
-            Dashboard
+            Invitations
           </ListItem>
+          </Link>
+          
           <ListItem>
             <ListItemPrefix>
               <svg

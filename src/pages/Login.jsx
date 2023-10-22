@@ -13,7 +13,7 @@ import { back } from "../const/urls";
 import { ContextMain } from "../context/ContextMain";
 
 function Login() {
-  const {setAuth} = useContext(ContextMain)
+  const {setAuth, auth} = useContext(ContextMain)
     const [user, setUser] = useState({
         email:"",
         password:""
@@ -51,17 +51,17 @@ function Login() {
             }
             
     }
-    if (redirect == true) {
+    if (redirect == true || auth == true) {
         return <Navigate to={"/invitations"}></Navigate>;
       }
   return (
     <>
-    <div className="w-full flex justify-center items-center min-h-screen">
+    <div className="w-full flex justify-center items-center min-h-screen bg-black/90">
       <Alert color="red" open={alertError} onClose={() => setAlertError(false)} className="fixed z-50 top-4 right-4 w-max">
         {messageError}
       </Alert>
     
-        <Card color="transparent" shadow={false}>
+        <Card color="transparent" shadow={false} className="border-2 border-black bg-white p-8">
         <Typography variant="h4" color="blue-gray">
           Login
         </Typography>
@@ -70,8 +70,8 @@ function Login() {
         </Typography>
         <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
           <div className="mb-1 flex flex-col gap-6">
-            <input onChange={handdleChange} type="email" name="email" placeholder="Email"/>
-            <input onChange={handdleChange} type="password" name="password" placeholder="Password"/>
+            <input onChange={handdleChange} className="border-2 border-gray-500 rounded-md p-2" type="email" name="email" placeholder="Email"/>
+            <input onChange={handdleChange} className="border-2 border-gray-500 rounded-md p-2" type="password" name="password" placeholder="Password"/>
           </div>
           <Button className="mt-6" fullWidth onClick={handdleSubmit}>
             sign up

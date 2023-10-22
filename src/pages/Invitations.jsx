@@ -10,13 +10,14 @@ function Invitations() {
   const [user, setUser] = useState([]);
   const [expirationStatus, setExpirationStatus] = useState("");
   const { auth } = useContext(ContextMain);
-  if (!auth) {
-    return <Navigate to={"/"}></Navigate>;
-  }
+
   useEffect(() => {
     getInvitations();
   }, []);
 
+  if (!auth) {
+    return <Navigate to={"/"}></Navigate>;
+  }
   async function getInvitations() {
     try {
       const url = `${back}/invitations/user`;
@@ -32,7 +33,6 @@ function Invitations() {
         console.log(response.data);
         const data = response.data;
         setUser(data);
-        
       } else {
         console.log(response.data.message);
       }
@@ -43,15 +43,17 @@ function Invitations() {
 
   return (
     <>
-      <div className="flex gap-4 items-center py-6">
-        <DrawerDash></DrawerDash>
-        <p className="font-extrabold">Invitaciones</p>
-      </div>
-      <main className="w-11/12 mx-auto">
-        <div className="flex flex-col gap-2">
-          {user.map((inv, key) => (
-            <CardInvitation key={key} inv={inv}></CardInvitation>
-          ))}
+      <main className="min-h-screen bg-black/90 pb-1">
+        <div className="flex gap-4 items-center py-6 bg-white">
+          <DrawerDash></DrawerDash>
+          <p className="font-extrabold">Invitaciones</p>
+        </div>
+        <div className="w-11/12 mx-auto my-4">
+          <div className="flex flex-col gap-2">
+            {user.map((inv, key) => (
+              <CardInvitation key={key} inv={inv}></CardInvitation>
+            ))}
+          </div>
         </div>
       </main>
     </>
