@@ -11,6 +11,7 @@ import axios from "axios";
 import { back } from "../const/urls";
 import { ContextMain } from "../context/ContextMain";
 import { DrawerDash } from "../components/DrawerDash";
+import { ButtonBack } from "../components/ButtonBack";
 
 function DetailsInv() {
   const { id } = useParams();
@@ -53,8 +54,6 @@ function DetailsInv() {
 
         const currentDate = new Date();
         const timeDifference = Math.floor((backendDate - currentDate) / 60000);
-        var expires = formatDate(data.expiresAt);
-        var create = formatDate(data.createdAt);
 
         if (timeDifference > 0) {
           setExpirationStatus(`Tiene ${timeDifference} minutos restantes.`);
@@ -68,14 +67,18 @@ function DetailsInv() {
   }
   return (
     <>
-      <main className="min-h-screen bg-black/90 pb-1">
+      <main className="min-h-screen relative bg-black/90 pb-1">
+        <div className=" absolute left-1 bottom-4 md:left-6 md:bottom-10">
+          <ButtonBack></ButtonBack>
+        </div>
+        
         <div className="flex gap-4 items-center py-6 bg-white">
           <DrawerDash></DrawerDash>
           <p className="font-extrabold">Invitación</p>
         </div>
         <div className="w-full flex items-center justify-center my-4 md:my-10">
-          <div className="rounded-md bg-blue-gray-400 py-5 px-8">
-            <h2 className="text-white font-bold text-center my-7 text-xl md:text-5xl">
+          <div className="rounded-md bg-blue-gray-400/40 py-5 px-8 text-white">
+            <h2 className=" font-bold text-center my-7 text-2xl md:text-5xl">
               Invitación
             </h2>
             <div className="flex flex-col md:flex-row md:items-center md:gap-6 gap-2">

@@ -52,7 +52,7 @@ function Login() {
             
     }
     if (redirect == true || auth == true) {
-        return <Navigate to={"/invitations"}></Navigate>;
+        return <Navigate to={"/dashboard"}></Navigate>;
       }
   return (
     <>
@@ -61,7 +61,7 @@ function Login() {
         {messageError}
       </Alert>
     
-        <Card color="transparent" shadow={false} className="border-2 border-black bg-white p-8">
+        <Card color="transparent" shadow={false} className=" bg-white shadow-2xl shadow-blue-gray-50 p-8">
         <Typography variant="h4" color="blue-gray">
           Login
         </Typography>

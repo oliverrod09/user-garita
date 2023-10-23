@@ -5,7 +5,7 @@ import axios from "axios";
 export const ContextMain = createContext();
 
 export function ContextMainProvider(props) {
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(!!sessionStorage.getItem("token"));
 
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
