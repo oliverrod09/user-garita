@@ -8,7 +8,7 @@ import {
     Alert,
   } from "@material-tailwind/react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { back } from "../const/urls";
 import { ContextMain } from "../context/ContextMain";
 
@@ -61,22 +61,22 @@ function Login() {
         {messageError}
       </Alert>
     
-        <Card color="transparent" shadow={false} className=" bg-white shadow-2xl shadow-blue-gray-50 p-8">
+        <Card color="transparent" shadow={false} className="w-11/12 md:w-auto bg-white shadow-lg shadow-blue-gray-50 p-8">
         <Typography variant="h4" color="blue-gray">
           Login
         </Typography>
         <Typography color="gray" className="mt-1 font-normal">
           Ingrese sus credenciales
         </Typography>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+        <form className="mt-8 mb-2 w-full md:w-80 max-w-screen-lg sm:w-96">
           <div className="mb-1 flex flex-col gap-6">
             <input onChange={handdleChange} className="border-2 border-gray-500 rounded-md p-2" type="email" name="email" placeholder="Email"/>
             <input onChange={handdleChange} className="border-2 border-gray-500 rounded-md p-2" type="password" name="password" placeholder="Password"/>
           </div>
-          <Button className="mt-6" fullWidth onClick={handdleSubmit}>
+          <Button className="my-6" fullWidth onClick={handdleSubmit}>
             sign up
           </Button>
-          
+          <Link to={"/register"} className="decoration-black decoration-1 underline">If you don't have an account yet, you can register here</Link>
         </form>
       </Card>
     </div>

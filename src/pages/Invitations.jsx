@@ -27,6 +27,9 @@ function Invitations() {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       };
+      // if (auth) {
+        
+      // }
       const response = await axios.get(url, config);
 
       if (response.status == 200) {

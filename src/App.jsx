@@ -6,6 +6,8 @@ import Invitations from './pages/Invitations';
 import DetailsInv from './pages/DetailsInv';
 import { ContextMain } from "./context/ContextMain";
 import Dashboard from './pages/Dashboard';
+import Addinvitation from './pages/AddInvitation';
+import Register from './pages/Register';
 
 
 
@@ -17,9 +19,11 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<Login></Login>}></Route>
+        <Route path='/register' element={<Register></Register>}></Route>
         <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
         <Route path='/invitations' element={<Invitations></Invitations>}></Route>
         <Route path='/invitation/:id' element={<DetailsInv></DetailsInv>}></Route>
+        <Route path='/add_invitation' element={<Addinvitation></Addinvitation>}></Route>
       </Routes>
     </Router>
       
