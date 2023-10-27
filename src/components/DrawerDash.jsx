@@ -85,15 +85,8 @@ export function DrawerDash() {
                   />
                 </svg>
               </ListItemPrefix>
-              Analytics
-              <ListItemSuffix>
-                <Chip
-                  value="5"
-                  size="sm"
-                  color="green"
-                  className="rounded-full"
-                />
-              </ListItemSuffix>
+              Create Invitation
+              
             </ListItem>
           </Link>
 
