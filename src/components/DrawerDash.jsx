@@ -12,6 +12,7 @@ import {
 } from "@material-tailwind/react";
 import { ContextMain } from "../context/ContextMain";
 import { Navigate, Link } from "react-router-dom";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 
 export function DrawerDash() {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,9 @@ export function DrawerDash() {
   }
   return (
     <>
-      <Button onClick={openDrawer}>Menu</Button>
+      <Button onClick={openDrawer}>
+        <Bars3Icon className="h-5 w-5"></Bars3Icon>
+      </Button>
       <Drawer open={open} onClose={closeDrawer}>
         <div className="mb-2 flex items-center justify-between p-4">
           <Typography variant="h5" color="blue-gray">
@@ -90,7 +93,7 @@ export function DrawerDash() {
             </ListItem>
           </Link>
 
-          <ListItem>
+          {/* <ListItem>
             <ListItemPrefix>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +143,7 @@ export function DrawerDash() {
               </svg>
             </ListItemPrefix>
             Tables
-          </ListItem>
+          </ListItem> */}
         </List>
         <Button onClick={cerrar} color="red" className="mt-3 ml-5" size="sm">
           cerrar sesión

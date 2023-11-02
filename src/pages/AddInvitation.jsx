@@ -75,7 +75,7 @@ function Addinvitation() {
   return (
     <>
       <main className="min-h-screen bg-black/90 pb-1">
-        <div className="flex gap-4 items-center py-6 bg-white">
+        <div className="flex gap-4 items-center py-6 bg-white px-4">
           <DrawerDash></DrawerDash>
           <p className="font-extrabold">Add invitation</p>
         </div>

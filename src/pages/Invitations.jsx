@@ -11,8 +11,10 @@ import {
 } from "@heroicons/react/24/outline";
 
 function Invitations() {
-  const [user, setUser] = useState([]);
-  const [filteredUser, setFilteredUser] = useState([]);
+  const [invs, setInvs] = useState([]);
+  const [filterInvLen, setFilterInvLen] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [search, setSearch] = useState("");
   const [expirationStatus, setExpirationStatus] = useState("");
 
   const { auth } = useContext(ContextMain);
@@ -21,10 +23,10 @@ function Invitations() {
     getInvitations();
   }, []);
 
-  
   if (!auth) {
     return <Navigate to={"/"}></Navigate>;
   }
+
   async function getInvitations() {
     try {
       const url = `${back}/invitations/user`;
@@ -38,8 +40,7 @@ function Invitations() {
 
       if (response.status === 200) {
         const data = response.data;
-        setUser(data);
-        setFilteredUser(data);
+        setInvs(data);
       } else {
         console.log(response.data.message);
       }
@@ -48,23 +49,55 @@ function Invitations() {
     }
   }
 
-  
-
-  function searchInv(e) {
-    const inputValue = e.target.value.toLowerCase();
-    const filterInv = user.filter((inv) => {
+  const pagesInv = () => {
+    if (search.length === 0) {
+      return invs.slice(currentPage, currentPage + 5);
+    }
+    const filterInv = invs.filter((inv) => {
       return (
-        inv.name.toLowerCase().includes(inputValue) ||
-        inv.description.toLowerCase().includes(inputValue)
+        inv.name.toLowerCase().includes(search) ||
+        inv.description.toLowerCase().includes(search)
       );
     });
-    setFilteredUser(filterInv);
+    // setFilterInvLen(filterInv.length)
+    return filterInv.slice(currentPage, currentPage +5)
+  };
+
+  const nextPage = () => {
+    const filterInv = invs.filter((inv) => {
+      return (
+        inv.name.toLowerCase().includes(search) ||
+        inv.description.toLowerCase().includes(search)
+      );
+    });
+    if (filterInv.length>currentPage+5) {
+      setCurrentPage(currentPage + 5);
+    }  
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 5);
+    }
+  };
+
+  function searchInv(e) {
+    setCurrentPage(0);
+    setSearch(e.target.value);
+    //    const inputValue = e.target.value.toLowerCase();
+    //    const filterInv = invs.filter((inv) => {
+    //      return (
+    //        inv.name.toLowerCase().includes(inputValue) ||
+    //        inv.description.toLowerCase().includes(inputValue)
+    //      );
+    //    });
+    //    setFilterInv(filterInv);
   }
 
   return (
     <>
       <main className="min-h-screen bg-black/90 pb-1">
-        <div className="flex gap-4 items-center py-6 bg-white">
+        <div className="flex gap-4 items-center py-6 px-4 bg-white">
           <DrawerDash></DrawerDash>
           <p className="font-extrabold">Invitaciones</p>
         </div>
@@ -72,13 +105,28 @@ function Invitations() {
           <input
             type="text"
             onChange={searchInv}
+            value={search}
             placeholder="Buscar"
             className="my-4 w-full rounded-lg border-0 p-2 text-center"
           />
         </div>
+        <div className="flex gap-4 w-max mx-auto">
+          <button
+            onClick={prevPage}
+            className="bg-black border-white border-2 text-white p-3 rounded-lg"
+          >
+            anteriores
+          </button>
+          <button
+            onClick={nextPage}
+            className="bg-black border-white border-2 text-white p-3 rounded-lg"
+          >
+            siguientes
+          </button>
+        </div>
         <div className="w-11/12 mx-auto my-4">
           <div className="flex flex-col gap-2">
-            {filteredUser.map((inv, key) => (
+            {pagesInv().map((inv, key) => (
               <CardInvitation key={key} inv={inv}></CardInvitation>
             ))}
           </div>

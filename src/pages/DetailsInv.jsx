@@ -7,6 +7,7 @@ import {
   SpeedDialContent,
   SpeedDialAction,
   Typography,
+  Alert,
 } from "@material-tailwind/react";
 import {
   PlusIcon,
@@ -16,7 +17,7 @@ import {
   TrashIcon,
   ClockIcon,
   UserPlusIcon,
-  NoSymbolIcon
+  NoSymbolIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { back } from "../const/urls";
@@ -31,6 +32,10 @@ function DetailsInv() {
   const [expirationStatus, setExpirationStatus] = useState("");
   const containerRef = useRef(null);
   const [qrGenerated, setQrGenerated] = useState(false);
+  const [alertOk, setAlertOk] = useState(false);
+  const [alertError, setAlertError] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [serverOk, setServerOk] = useState("");
 
   useEffect(() => {
     if (invitation.cod && containerRef.current && !qrGenerated) {
@@ -44,6 +49,49 @@ function DetailsInv() {
 
   if (!auth) {
     return <Navigate to={"/"}></Navigate>;
+  }
+
+  async function expiredInvitation() {
+    try {
+      const url = `${back}/invitations/${invitation.id}`;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      };
+      const response = await axios.put(url, config);
+      if (response.status == 200) {
+        setServerOk("Invitación actualizada");
+        setAlertOk(true);
+        getInvitation()
+      }
+    } catch (error) {
+      setServerError(error.response.data.message);
+      setAlertError(true);
+    }
+  }
+
+  async function deleteInvitation() {
+    try {
+      const url = `${back}/invitations/${invitation.id}`;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      };
+      const response = await axios.delete(url, config);
+      if (response.status == 200) {
+        console.log("invitacion eliminada");
+        setServerOk("Invitacion eliminada");
+        setAlertOk(true);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+      setServerError(error.response.data.message);
+      setAlertError(true);
+    }
   }
 
   async function getInvitation() {
@@ -79,11 +127,28 @@ function DetailsInv() {
   return (
     <>
       <main className="min-h-screen relative bg-black/90 md:pb-1">
-        <div className="flex gap-4 items-center py-6 bg-white">
+        <Alert
+          color="green"
+          open={alertOk}
+          onClose={() => setAlertOk(false)}
+          className="fixed z-50 top-4 right-4 w-max"
+        >
+          {serverOk}
+        </Alert>
+
+        <Alert
+          color="red"
+          open={alertError}
+          onClose={() => setAlertError(false)}
+          className="fixed z-50 top-4 right-4 w-max"
+        >
+          {serverError}
+        </Alert>
+        <div className="flex gap-4 items-center py-6 px-4 bg-white">
           <DrawerDash></DrawerDash>
           <p className="font-extrabold">Invitación</p>
         </div>
-        {invitation.name ? (
+        {invitation.id ? (
           <div className="w-full relative md:h-[calc(100vh-180px)] flex items-center justify-center md:my-10">
             {/* button back */}
             <div className="absolute left-1 top-8 md:left-6 md:bottom-10 ">
@@ -98,7 +163,10 @@ function DetailsInv() {
                   </IconButton>
                 </SpeedDialHandler>
                 <SpeedDialContent>
-                  <SpeedDialAction className="h-16 w-16">
+                  <SpeedDialAction
+                    className="h-16 w-16"
+                    onClick={deleteInvitation}
+                  >
                     <TrashIcon className="h-5 w-5" />
                     <Typography
                       color="blue-gray"
@@ -107,7 +175,10 @@ function DetailsInv() {
                       Eliminar
                     </Typography>
                   </SpeedDialAction>
-                  <SpeedDialAction className="h-16 w-16">
+                  <SpeedDialAction
+                    className="h-16 w-16"
+                    onClick={expiredInvitation}
+                  >
                     <ClockIcon className="h-5 w-5" />
                     <Typography
                       color="blue-gray"
@@ -170,11 +241,12 @@ function DetailsInv() {
               <ButtonBack></ButtonBack>
             </div>
             <div className="bg-blue-gray-400 p-10 mt-24 md:mt-0 rounded-xl flex justify-center items-center flex-col">
-              <p className="text-3xl font-bold text-white">Invitacion no encontrada</p>
+              <p className="text-3xl font-bold text-white">
+                Invitacion no encontrada
+              </p>
               <NoSymbolIcon className="w-24 h-24 text-white"></NoSymbolIcon>
             </div>
           </div>
-          
         )}
       </main>
     </>
