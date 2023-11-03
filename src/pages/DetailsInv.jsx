@@ -24,6 +24,8 @@ import { back } from "../const/urls";
 import { ContextMain } from "../context/ContextMain";
 import { DrawerDash } from "../components/DrawerDash";
 import { ButtonBack } from "../components/ButtonBack";
+import { saveAs } from "file-saver";
+import html2canvas from "html2canvas";
 
 function DetailsInv() {
   const { id } = useParams();
@@ -51,6 +53,16 @@ function DetailsInv() {
     return <Navigate to={"/"}></Navigate>;
   }
 
+
+  const downloadImage = () => {
+    const node = document.getElementById('capture'); // Identificador del contenedor que deseas capturar
+    html2canvas(node).then((canvas) => {
+      canvas.toBlob((blob) => {
+        saveAs(blob, 'screenshot.png'); // Nombre de archivo de la imagen descargada
+      });
+    });
+  };
+
   async function expiredInvitation() {
     try {
       const url = `${back}/invitations/${invitation.id}`;
@@ -64,7 +76,7 @@ function DetailsInv() {
       if (response.status == 200) {
         setServerOk("Invitación actualizada");
         setAlertOk(true);
-        getInvitation()
+        getInvitation();
       }
     } catch (error) {
       setServerError(error.response.data.message);
@@ -187,33 +199,55 @@ function DetailsInv() {
                       Expirar
                     </Typography>
                   </SpeedDialAction>
-                  <SpeedDialAction className="h-16 w-16">
+                  <SpeedDialAction className="h-16 w-16"
+                  onClick={downloadImage}>
                     <UserPlusIcon className="h-5 w-5" />
                     <Typography
                       color="blue-gray"
                       className="text-xs font-normal"
                     >
-                      Agregar
+                      Descargar
                     </Typography>
                   </SpeedDialAction>
                 </SpeedDialContent>
               </SpeedDial>
             </div>
 
-            <div className="rounded-md w-full md:w-auto bg-blue-gray-400/40 py-5 px-8 text-white">
+            <div id="capture" className="lg:rounded-md w-full md:w-auto bg-blue-gray-700 py-5 px-8 text-white">
               <h2 className=" font-bold text-center my-7 text-4xl md:text-5xl">
                 Invitación
               </h2>
               <div className="flex flex-col md:flex-row md:items-center md:gap-6 gap-2">
-                <div className="flex flex-col gap-8 items-center text-sm md:text-lg">
-                  <div className="flex gap-4 ">
-                    <div className="flex flex-col gap-2">
-                      <p>Nombre: {invitation.name}</p>
-                      <p>Placa: {invitation.board}</p>
-                      <p>Celular: {invitation.cellphone}</p>
-                      <p>Cedula: {invitation.cedula}</p>
-                    </div>
-                    <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-8 items-center text-base md:text-lg">
+                  <div className="flex flex-col items-center lg:items-start gap-4 ">
+                    <p className="min-w-[150px] text-center lg:text-start">
+                      Nombre:{" "}
+                      <span className="block lg:inline-block">
+                        {invitation.name}
+                      </span>
+                    </p>
+                    <div className="justify-center items-center gap-x-8 flex gap-2">
+                      <div>
+                        <p className=" text-start">
+                          Placa:{" "}
+                          <span className=" lg:inline-block">
+                            {invitation.board}
+                          </span>
+                        </p>
+                        <p className=" text-start">
+                          Celular:{" "}
+                          <span className=" lg:inline-block">
+                            {invitation.cellphone}
+                          </span>
+                        </p>
+                        <p className=" text-start">
+                          Cedula:{" "}
+                          <span className=" lg:inline-block">
+                            {invitation.cedula}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-2 lg:mt-0">
                       <p>
                         Usada:{" "}
                         {invitation.used ? (
@@ -224,14 +258,21 @@ function DetailsInv() {
                       </p>
                       <p>Tiempo: {expirationStatus}</p>
                     </div>
+                    </div>
+                    
                   </div>
-
                   <div>
                     <p>Creada: {formatDate(invitation.createdAt)}</p>
                     <p>Expira: {formatDate(invitation.expiresAt)}</p>
                   </div>
                 </div>
                 <div className="mx-auto" ref={containerRef}></div>
+              </div>
+              <div className="mt-4 text-xs lg:text-sm w-4/5 px-4 mx-auto text-center lg:text-start">
+                Descripción:{" "}
+                <span className="block lg:inline-block">
+                  {invitation.description}
+                </span>
               </div>
             </div>
           </div>

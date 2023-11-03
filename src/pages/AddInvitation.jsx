@@ -77,7 +77,7 @@ function Addinvitation() {
       <main className="min-h-screen bg-black/90 pb-1">
         <div className="flex gap-4 items-center py-6 bg-white px-4">
           <DrawerDash></DrawerDash>
-          <p className="font-extrabold">Add invitation</p>
+          <p className="font-extrabold">Crear invitación</p>
         </div>
 
 
@@ -158,7 +158,7 @@ function Addinvitation() {
               </div>
               <div className="flex w-full md:w-6/12 flex-col">
                 <label className="" htmlFor="expiresAt">
-                  Fecha
+                  Expira en:
                 </label>
                 <Select
                 defaultValue={options[6]}
