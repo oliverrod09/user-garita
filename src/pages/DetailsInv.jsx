@@ -38,6 +38,7 @@ function DetailsInv() {
   const [alertError, setAlertError] = useState(false);
   const [serverError, setServerError] = useState("");
   const [serverOk, setServerOk] = useState("");
+  const [updateExample, setupdateExample] = useState({})
 
   useEffect(() => {
     if (invitation.cod && containerRef.current && !qrGenerated) {
@@ -72,7 +73,7 @@ function DetailsInv() {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       };
-      const response = await axios.put(url, config);
+      const response = await axios.put(url, updateExample, config);
       if (response.status == 200) {
         setServerOk("Invitación actualizada");
         setAlertOk(true);
