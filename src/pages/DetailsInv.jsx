@@ -214,6 +214,7 @@ function DetailsInv() {
               </SpeedDial>
             </div>
 
+            {/* //capture */}
             <div id="capture" className="lg:rounded-md w-full md:w-auto bg-blue-gray-700 py-5 px-8 text-white">
               <h2 className=" font-bold text-center my-7 text-4xl md:text-5xl">
                 Invitación
@@ -267,7 +268,12 @@ function DetailsInv() {
                     <p>Expira: {formatDate(invitation.expiresAt)}</p>
                   </div>
                 </div>
-                <div className="mx-auto" ref={containerRef}></div>
+                <div className="mx-auto">
+                  <div  className="p-4 bg-white w-max">
+                    <div className="mx-auto" ref={containerRef}></div>
+                  </div>
+                </div>
+                
               </div>
               <div className="mt-4 text-xs lg:text-sm w-4/5 px-4 mx-auto text-center lg:text-start">
                 Descripción:{" "}

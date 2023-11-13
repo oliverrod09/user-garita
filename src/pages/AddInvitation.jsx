@@ -6,12 +6,13 @@ import Axios from "axios";
 import Select from "react-select";
 import { back } from "../const/urls";
 import { Alert } from "@material-tailwind/react";
+import { ButtonBack } from "../components/ButtonBack";
 
 function Addinvitation() {
   const { auth } = useContext(ContextMain);
   const [alertOk, setAlertOk] = useState(false);
   const [alertError, setAlertError] = useState(false);
-  const [serverError, setServerError] = useState("")
+  const [serverError, setServerError] = useState("");
   const [invitation, setInvitation] = useState({
     name: "",
     cedula: "",
@@ -60,26 +61,29 @@ function Addinvitation() {
       const response = await Axios.post(url, invitation, config);
       if (response.status === 201) {
         setInvitation({
-            name:"", cedula:"", cellphone:"", board:"", description:"", expiresAt:300
-          })
-        setAlertOk(true)
+          name: "",
+          cedula: "",
+          cellphone: "",
+          board: "",
+          description: "",
+          expiresAt: 300,
+        });
+        setAlertOk(true);
       }
     } catch (error) {
-        setServerError(error.response.data.message)
-        setAlertError(true)
-        console.log(error.response.data.message)
+      setServerError(error.response.data.message);
+      setAlertError(true);
+      console.log(error.response.data.message);
     }
-
   }
 
   return (
     <>
-      <main className="min-h-screen bg-black/90 pb-1">
+      <main className="min-h-screen bg-black/90 pb-1 relative">
         <div className="flex gap-4 items-center py-6 bg-white px-4">
           <DrawerDash></DrawerDash>
           <p className="font-extrabold">Crear invitación</p>
         </div>
-
 
         <Alert
           color="green"
@@ -98,106 +102,111 @@ function Addinvitation() {
         >
           {serverError}
         </Alert>
-
-        <form
-          action=""
-          className="w-max py-4 px-8 rounded-md mt-8 mx-auto bg-white shadow-lg shadow-white"
-        >
-          <h2 className="text-3xl">Crear una invitacion</h2>
-          <div className="">
-            <div className="flex flex-col md:flex-row gap-4 my-4">
-              <div className="flex flex-col">
-                <label className="" htmlFor="name">
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  className="p-4 rounded-lg border-gray-300 border-2"
-                  onChange={handdleChange}
-                  value={invitation.name}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="" htmlFor="cedula">
-                  Cedula
-                </label>
-                <input
-                  type="text"
-                  name="cedula"
-                  className="p-4 rounded-lg border-gray-300 border-2"
-                  onChange={handdleChange}
-                  value={invitation.cedula}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label className="" htmlFor="cellphone">
-                  Telefono
-                </label>
-                <input
-                  type="text"
-                  name="cellphone"
-                  className="p-4 rounded-lg border-gray-300 border-2"
-                  onChange={handdleChange}
-                  value={invitation.cellphone}
-                />
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row md:justify-center gap-4 my-4">
-              <div className="flex w-full md:w-6/12 flex-col">
-                <label className="" htmlFor="board">
-                  Placa
-                </label>
-                <input
-                  type="text"
-                  name="board"
-                  className="p-4 rounded-lg border-gray-300 border-2"
-                  onChange={handdleChange}
-                  value={invitation.board}
-                />
-              </div>
-              <div className="flex w-full md:w-6/12 flex-col">
-                <label className="" htmlFor="expiresAt">
-                  Expira en:
-                </label>
-                <Select
-                defaultValue={options[6]}
-                  options={options}
-                  onChange={handdleSelect}
-                  theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 5,
-                    colors: {
-                      ...theme.colors,
-                      primary25: "darkgray",
-                      primary: "black",
-                    },
-                  })}
-                  className="p-2 rounded-lg border-gray-300 border-2 focus:border-black"
-                ></Select>
-                {/* <label className="" htmlFor="expiresAt">Fecha</label>
-                <input type="date" name="expiresAt" className="p-4 rounded-lg border-gray-300 border-2" /> */}
-              </div>
-            </div>
-            <div>
-              <label htmlFor="description">Descripción</label>
-              <textarea
-                name="description"
-                className="w-full border-gray-300 border-2 rounded-lg"
-                rows={5}
-                onChange={handdleChange}
-                value={invitation.description}
-              ></textarea>
-            </div>
+        {/* button back */}
+        <div className="w-full relative md:h-[calc(100vh-180px)] flex items-center justify-center my-10">
+          <div className="absolute z-20 left-1 top-8 md:left-6 md:bottom-10 ">
+            <ButtonBack></ButtonBack>
           </div>
-          <button
-            type="button"
-            className="w-full rounded-lg bg-black py-4 px-8 text-white"
-            onClick={handdleSubmit}
+          <form
+            action=""
+            className="w-max py-4 px-8 rounded-md mt-8 mx-auto bg-white shadow-lg shadow-white"
           >
-            Crear
-          </button>
-        </form>
+            <h2 className="text-3xl">Crear una invitacion</h2>
+            <div className="">
+              <div className="flex flex-col md:flex-row gap-4 my-4">
+                <div className="flex flex-col">
+                  <label className="" htmlFor="name">
+                    Nombre
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="p-4 rounded-lg border-gray-300 border-2"
+                    onChange={handdleChange}
+                    value={invitation.name}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="" htmlFor="cedula">
+                    Cedula
+                  </label>
+                  <input
+                    type="text"
+                    name="cedula"
+                    className="p-4 rounded-lg border-gray-300 border-2"
+                    onChange={handdleChange}
+                    value={invitation.cedula}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="" htmlFor="cellphone">
+                    Telefono
+                  </label>
+                  <input
+                    type="text"
+                    name="cellphone"
+                    className="p-4 rounded-lg border-gray-300 border-2"
+                    onChange={handdleChange}
+                    value={invitation.cellphone}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row md:justify-center gap-4 my-4">
+                <div className="flex w-full md:w-6/12 flex-col">
+                  <label className="" htmlFor="board">
+                    Placa
+                  </label>
+                  <input
+                    type="text"
+                    name="board"
+                    className="p-4 rounded-lg border-gray-300 border-2"
+                    onChange={handdleChange}
+                    value={invitation.board}
+                  />
+                </div>
+                <div className="flex w-full md:w-6/12 flex-col">
+                  <label className="" htmlFor="expiresAt">
+                    Expira en:
+                  </label>
+                  <Select
+                    defaultValue={options[6]}
+                    options={options}
+                    onChange={handdleSelect}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 5,
+                      colors: {
+                        ...theme.colors,
+                        primary25: "darkgray",
+                        primary: "black",
+                      },
+                    })}
+                    className="p-2 rounded-lg border-gray-300 border-2 focus:border-black"
+                  ></Select>
+                  {/* <label className="" htmlFor="expiresAt">Fecha</label>
+                <input type="date" name="expiresAt" className="p-4 rounded-lg border-gray-300 border-2" /> */}
+                </div>
+              </div>
+              <div>
+                <label htmlFor="description">Descripción</label>
+                <textarea
+                  name="description"
+                  className="w-full border-gray-300 border-2 rounded-lg"
+                  rows={5}
+                  onChange={handdleChange}
+                  value={invitation.description}
+                ></textarea>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="w-full rounded-lg bg-black py-4 px-8 text-white"
+              onClick={handdleSubmit}
+            >
+              Crear
+            </button>
+          </form>
+        </div>
       </main>
     </>
   );
